@@ -1,0 +1,4 @@
+rootProject.name = 'playlegend-bans'
+include 'bans-plugin'
+include 'persistence'
+

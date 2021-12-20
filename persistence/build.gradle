@@ -1,0 +1,20 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group 'at.nipe.playlegend.bans'
+version '0.0.1-alpha'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

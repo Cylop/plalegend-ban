@@ -1,0 +1,62 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.github.johnrengelman.shadow" version "7.1.0"
+    id "idea"
+    id 'java'
+}
+
+group = 'at.nipe.playlegend'
+version = '0.0.1-alpha'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+            content {
+                includeGroup 'org.bukkit'
+                includeGroup 'org.spigotmc'
+            }
+        }
+        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+        maven { url = 'https://maven.repository.redhat.com/ga/' }
+    }
+
+    dependencies {
+        implementation 'commons-logging:commons-logging:1.2'
+
+        compileOnly 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.22'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+repositories {
+}
+
+dependencies {
+}

@@ -1,0 +1,63 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id "com.github.johnrengelman.shadow"
+    id "idea"
+    id 'java'
+}
+
+group = 'at.nipe.playlegend'
+version = '0.0.1-alpha'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url = 'https://maven.repository.redhat.com/ga/' }
+}
+
+dependencies {
+    implementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+
+    implementation(project(":persistence"))
+
+    //implementation 'org.hibernate:hibernate-core:5.6.2.Final'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    implementation 'dev.alangomes:spigot-spring-boot-starter:0.20.7'
+
+    implementation 'commons-logging:commons-logging:1.2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+}
+
+shadowJar {}
+
+task exportJarToBin(type: Copy, dependsOn: 'shadowJar') {
+    from shadowJar
+    into "../server/plugins"
+}
+
+test {
+    useJUnitPlatform()
+}
