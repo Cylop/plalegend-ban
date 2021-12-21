@@ -2,3 +2,12 @@ name: PlaylegendBans
 version: 0.0.1
 author: NoSleep - NIPE
 main: at.nipe.playlegend.playlegendbans.PlaylegendBansPlugin
+
+commands:
+  ban:
+    permission: playlegend.ban
+    aliases:
+      - b
+    description: This command is to ban an unwished player from the server
+    permission-message: You don't have permission to execute this command
+    usage: /ban <player> [duration in 24w7h10m] [message]

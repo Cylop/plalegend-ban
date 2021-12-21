@@ -1,0 +1,4 @@
+mysql:
+  url: enter url
+  user: username
+  password: passwort
