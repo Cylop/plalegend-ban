@@ -7,6 +7,7 @@ public final class LocalKeys {
 
   public static final String PLUGIN_NAME = "plugin.name";
 
+  public static final String NO_USER_ACCOUNT = "errors.user.no-account";
   public static final String CREATING_USER_ACCOUNT_ERROR = "errors.user.creation";
   public static final String NO_PERMISSION = "errors.no-permission";
   public static final String INVALID_DURATION_UNIT = "errors.duration.invalid-unit";
