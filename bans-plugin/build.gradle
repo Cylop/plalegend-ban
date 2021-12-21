@@ -1,6 +1,4 @@
 plugins {
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
     id "com.github.johnrengelman.shadow"
     id "idea"
     id 'java'
@@ -31,20 +29,16 @@ repositories {
 
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    //implementation 'com.github.resource4j:resource4j-core:3.3.0'
 
+    implementation(project(":shared"))
+    implementation(project(":context"))
+    implementation(project(":dependency-injection"))
     implementation(project(":persistence"))
-
-    //implementation 'org.hibernate:hibernate-core:5.6.2.Final'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'mysql:mysql-connector-java'
-
-    implementation 'dev.alangomes:spigot-spring-boot-starter:0.20.7'
-
-    implementation 'commons-logging:commons-logging:1.2'
+    implementation(project(":localization"))
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 java {
