@@ -50,7 +50,6 @@ public class PersistenceModule extends AbstractModule {
 
   @Override
   protected void configure() {
-
     bind(BanDao.class).to(BasicBanDao.class);
     bind(UserDao.class).to(BasicUserDao.class);
 
