@@ -1,6 +1,7 @@
 package at.nipe.playlegend.playlegendbans.parser.durationparser;
 
-import at.nipe.playlegend.playlegendbans.exceptions.UnknownDurationUnitException;
+import at.nipe.playlegend.playlegendbans.shared.DurationPossibilities;
+import at.nipe.playlegend.playlegendbans.shared.exceptions.UnknownDurationUnitException;
 import at.nipe.playlegend.playlegendbans.parser.Parser;
 
 import java.time.LocalDateTime;
