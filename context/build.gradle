@@ -1,0 +1,9 @@
+group 'at.nipe.playlegend'
+version '0.0.1-alpha'
+
+
+dependencies {
+    implementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+
+    implementation(project(":shared"))
+}
