@@ -6,13 +6,13 @@ import java.util.UUID;
 
 public interface UserEntity {
 
-    UUID getId();
+  UUID getId();
 
-    String getName();
+  String getName();
 
-    Date getCreatedAt();
+  Date getCreatedAt();
 
-    long getVersion();
+  long getVersion();
 
-    Collection<? extends BanEntity> getBans();
+  Collection<? extends BanEntity> getBans();
 }

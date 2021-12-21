@@ -4,18 +4,19 @@ import java.util.Date;
 
 public interface BanEntity {
 
-     Long getId();
-     UserEntity getBanned();
+  Long getId();
 
-     UserEntity getBannedBy();
+  UserEntity getBanned();
 
-     String getReason();
+  UserEntity getBannedBy();
 
-     Date getUntil();
+  String getReason();
 
-     boolean isPermanent();
+  Date getUntil();
 
-     boolean isActive();
+  boolean isPermanent();
 
-     Date getCreatedAt();
+  boolean isActive();
+
+  Date getCreatedAt();
 }

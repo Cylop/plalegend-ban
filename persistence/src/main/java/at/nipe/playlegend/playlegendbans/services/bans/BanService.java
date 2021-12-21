@@ -9,17 +9,17 @@ import java.util.UUID;
 
 public interface BanService {
 
-    List<Ban> findAllForUser(UUID uuid) throws SQLException;
+  List<Ban> findAllForUser(UUID uuid) throws SQLException;
 
-    List<Ban> findAllByUser(UUID uuid) throws SQLException;
+  List<Ban> findAllByUser(UUID uuid) throws SQLException;
 
-    Ban createIfNotExists(Ban ban) throws SQLException;
+  Ban createIfNotExists(Ban ban) throws SQLException;
 
-    int delete(Ban ban) throws SQLException;
+  int delete(Ban ban) throws SQLException;
 
-    boolean unban(UUID user) throws SQLException;
+  boolean unban(UUID user) throws SQLException;
 
-    boolean isBanned(UUID user) throws SQLException;
+  boolean isBanned(UUID user) throws SQLException;
 
-    Optional<Ban> getLongestBan(UUID user) throws SQLException;
+  Optional<Ban> getLongestBan(UUID user) throws SQLException;
 }

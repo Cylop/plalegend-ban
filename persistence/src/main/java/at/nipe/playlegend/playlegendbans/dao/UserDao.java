@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserDao extends Dao<User, UUID> {
-    Optional<User> findUserByName(String name) throws SQLException;
+  Optional<User> findUserByName(String name) throws SQLException;
 }

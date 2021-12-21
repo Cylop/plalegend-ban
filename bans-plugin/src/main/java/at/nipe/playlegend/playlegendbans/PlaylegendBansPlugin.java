@@ -7,31 +7,31 @@ import com.google.inject.Injector;
 import lombok.extern.java.Log;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Log
 public class PlaylegendBansPlugin extends JavaPlugin {
 
-    private Injector injector;
+  private Injector injector;
 
-    @Override
-    public void onEnable() {
-        saveDefaultConfig();
+  @Override
+  public void onEnable() {
+    saveDefaultConfig();
 
-        this.injector = BansInjector.createInjector(
-                List.of(new PluginModule(this, new ConfigLoader(this).load()))
-        );
+    this.injector =
+        BansInjector.createInjector(List.of(new PluginModule(this, new ConfigLoader(this).load())));
 
-        var playerJoinListener = injector.getInstance(PlayerJoinListener.class);
+    var playerJoinListener = injector.getInstance(PlayerJoinListener.class);
 
-        this.getServer().getPluginManager().registerEvents(playerJoinListener, this);
+    this.getServer().getPluginManager().registerEvents(playerJoinListener, this);
 
-        var banCommand = injector.getInstance(BanCommand.class);
-        Objects.requireNonNull(this.getCommand("ban")).setExecutor(banCommand);
-    }
+    var banCommand = injector.getInstance(BanCommand.class);
+    Objects.requireNonNull(this.getCommand("ban")).setExecutor(banCommand);
+  }
 
-    @Override
-    public void onDisable() {
-        this.injector = null;
-    }
+  @Override
+  public void onDisable() {
+    this.injector = null;
+  }
 }

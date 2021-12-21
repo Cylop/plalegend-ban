@@ -1,6 +1,5 @@
 package at.nipe.playlegend.playlegendbans;
 
-
 import at.nipe.playlegend.playlegendbans.dao.BanDao;
 import at.nipe.playlegend.playlegendbans.dao.BasicBanDao;
 import at.nipe.playlegend.playlegendbans.dao.BasicUserDao;
@@ -11,42 +10,51 @@ import at.nipe.playlegend.playlegendbans.services.bans.BanService;
 import at.nipe.playlegend.playlegendbans.services.bans.BasicBanService;
 import at.nipe.playlegend.playlegendbans.services.users.BasicUserService;
 import at.nipe.playlegend.playlegendbans.services.users.UserService;
-import at.nipe.playlegend.playlegendbans.shared.resolution.Component;
+import at.nipe.playlegend.playlegendbans.shared.config.Config;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
-import com.j256.ormlite.table.TableUtils;
+import com.j256.ormlite.support.ConnectionSource;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
-
-import java.sql.SQLException;
-import java.util.logging.Level;
 
 @Log
 public class PersistenceModule extends AbstractModule {
 
-    private final JdbcPooledConnectionSource connectionSource;
+  @Provides
+  @Inject
+  @Singleton
+  @SneakyThrows
+  public static ConnectionSource provideConnectionSource(Config config) {
+    return new JdbcPooledConnectionSource(config.url(), config.user(), config.password());
+  }
 
-    @SneakyThrows
-    public PersistenceModule() {
-        // url, string, password
-        connectionSource = new JdbcPooledConnectionSource("jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11459737","sql11459737", "FtuBssV8mz");
+  @Provides
+  @Inject
+  @Singleton
+  @SneakyThrows
+  public static BasicBanDao provideBanDao(ConnectionSource connectionSource) {
+    return DaoManager.createDao(connectionSource, Ban.class);
+  }
 
-        TableUtils.createTableIfNotExists(this.connectionSource, Ban.class);
-        TableUtils.createTableIfNotExists(this.connectionSource, User.class);
-    }
+  @Provides
+  @Inject
+  @Singleton
+  @SneakyThrows
+  public static BasicUserDao provideUserDao(ConnectionSource connectionSource) {
+    return DaoManager.createDao(connectionSource, User.class);
+  }
 
-    @Override
-    protected void configure() {
-        bind(JdbcPooledConnectionSource.class).toInstance(this.connectionSource);
-        try {
-            bind(BanDao.class).toInstance(DaoManager.createDao(this.connectionSource, Ban.class));
-            bind(UserDao.class).toInstance(DaoManager.createDao(this.connectionSource, User.class));
+  @Override
+  protected void configure() {
 
-            bind(UserService.class).to(BasicUserService.class);
-            bind(BanService.class).to(BasicBanService.class);
-        } catch (SQLException e) {
-            log.log(Level.SEVERE, "Error whilst trying to instantiate instance of dao's", e);
-        }
-    }
+    bind(BanDao.class).to(BasicBanDao.class);
+    bind(UserDao.class).to(BasicUserDao.class);
+
+    bind(UserService.class).to(BasicUserService.class);
+    bind(BanService.class).to(BasicBanService.class);
+  }
 }

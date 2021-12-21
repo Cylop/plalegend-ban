@@ -20,47 +20,51 @@ import java.util.logging.Level;
 @Component
 public class BanFacade {
 
-    private final UserService userService;
-    private final BanService banService;
+  private final UserService userService;
+  private final BanService banService;
 
-    @Inject
-    public BanFacade(UserService userService, BanService banService) {
-        this.userService = userService;
-        this.banService = banService;
+  @Inject
+  public BanFacade(UserService userService, BanService banService) {
+    this.userService = userService;
+    this.banService = banService;
+  }
+
+  public Ban banPlayer(Player player, CommandSender sender, Date until, String message)
+      throws SQLException {
+    User toBeBanned;
+    User banner;
+
+    try {
+      var userOpt = this.userService.findById(player.getUniqueId());
+      if (userOpt.isEmpty()) {
+        sender.sendMessage(ChatColor.RED + "The player has no User profile");
+        throw new IllegalArgumentException("The player has no User profile");
+      }
+      toBeBanned = userOpt.get();
+
+      var bannerOpt =
+          this.userService.findById(
+              sender instanceof Player ? ((Player) sender).getUniqueId() : ServerUtil.SERVER_UUID);
+      if (bannerOpt.isEmpty()) {
+        sender.sendMessage(ChatColor.RED + "The player has no User profile");
+        throw new IllegalArgumentException("The player has no User profile");
+      }
+      banner = userOpt.get();
+
+    } catch (SQLException e) {
+      log.log(Level.WARNING, "Whilst trying to ban a user an exception occurred", e);
+      throw e;
     }
 
-    public Ban banPlayer(Player player, CommandSender sender, Date until, String message) throws SQLException {
-        User toBeBanned;
-        User banner;
+    final var ban =
+        Ban.builder()
+            .banned(toBeBanned)
+            .bannedBy(banner)
+            .reason(message)
+            .until(until)
+            .active(true)
+            .build();
 
-        try {
-            var userOpt = this.userService.findById(player.getUniqueId());
-            if(userOpt.isEmpty()) {
-                sender.sendMessage(ChatColor.RED + "The player has no User profile");
-                throw new IllegalArgumentException("The player has no User profile");
-            }
-            toBeBanned = userOpt.get();
-
-            var bannerOpt = this.userService.findById(sender instanceof Player ? ((Player)sender).getUniqueId() : ServerUtil.SERVER_UUID);
-            if(bannerOpt.isEmpty()) {
-                sender.sendMessage(ChatColor.RED + "The player has no User profile");
-                throw new IllegalArgumentException("The player has no User profile");
-            }
-            banner = userOpt.get();
-
-        } catch ( SQLException e) {
-            log.log(Level.WARNING, "Whilst trying to ban a user an exception occurred", e);
-            throw e;
-        }
-
-        final var ban = Ban.builder()
-                .banned(toBeBanned)
-                .bannedBy(banner)
-                .reason(message)
-                .until(until)
-                .active(true)
-                .build();
-
-        return this.banService.createIfNotExists(ban);
-    }
+    return this.banService.createIfNotExists(ban);
+  }
 }

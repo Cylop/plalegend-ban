@@ -10,13 +10,13 @@ import java.util.UUID;
 
 public interface BanDao extends Dao<Ban, Long> {
 
-    List<Ban> findAllForUser(UUID banned) throws SQLException;
+  List<Ban> findAllForUser(UUID banned) throws SQLException;
 
-    List<Ban> findAllByUser(UUID uuid) throws SQLException;
+  List<Ban> findAllByUser(UUID uuid) throws SQLException;
 
-    boolean unban(UUID user) throws SQLException;
+  boolean unban(UUID user) throws SQLException;
 
-    boolean isBanned(UUID user) throws SQLException;
+  boolean isBanned(UUID user) throws SQLException;
 
-    Optional<Ban> getLongestBan(UUID user) throws SQLException;
+  Optional<Ban> getLongestBan(UUID user) throws SQLException;
 }

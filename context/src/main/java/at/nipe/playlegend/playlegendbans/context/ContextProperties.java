@@ -9,28 +9,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ContextProperties {
 
-    private final Map<String, String> properties = new ConcurrentHashMap<>();
+  private final Map<String, String> properties = new ConcurrentHashMap<>();
 
-    public String getProperty(String key) {
-        return this.properties.get(key);
-    }
+  @SafeVarargs
+  public static ContextProperties of(Pair<String, String>... pairs) {
+    if (pairs == null || pairs.length == 0)
+      throw new IllegalArgumentException("Provided pairs in context must not be null or empty");
 
-    public void put(String key, String property) {
-        this.properties.put(key, property);
-    }
+    final var ctxProperties = new ContextProperties();
+    Arrays.stream(pairs).forEach(pair -> ctxProperties.put(pair.key(), pair.value()));
+    return ctxProperties;
+  }
 
-    public Set<Map.Entry<String, String>> entrySet() {
-        return properties.entrySet();
-    }
+  public String getProperty(String key) {
+    return this.properties.get(key);
+  }
 
+  public void put(String key, String property) {
+    this.properties.put(key, property);
+  }
 
-
-    @SafeVarargs
-    public static ContextProperties of(Pair<String, String>... pairs) {
-        if(pairs == null || pairs.length == 0) throw new IllegalArgumentException("Provided pairs in context must not be null or empty");
-
-        final var ctxProperties = new ContextProperties();
-        Arrays.stream(pairs).forEach(pair -> ctxProperties.put(pair.key(), pair.value()));
-        return ctxProperties;
-    }
+  public Set<Map.Entry<String, String>> entrySet() {
+    return properties.entrySet();
+  }
 }
