@@ -1,39 +1,37 @@
 package at.nipe.playlegend.playlegendbans;
 
-import dev.alangomes.springspigot.SpringSpigotBootstrapper;
-import dev.alangomes.springspigot.SpringSpigotInitializer;
+import at.nipe.playlegend.playlegendbans.commands.BanCommand;
+import at.nipe.playlegend.playlegendbans.config.ConfigLoader;
+import at.nipe.playlegend.playlegendbans.listener.PlayerJoinListener;
+import com.google.inject.Injector;
+import lombok.extern.java.Log;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.springframework.boot.Banner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.DefaultResourceLoader;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
+import java.util.*;
 
+@Log
 public class PlaylegendBansPlugin extends JavaPlugin {
 
-    public static final UUID SERVER_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    private ConfigurableApplicationContext context;
+    private Injector injector;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
-        try {
-            context = SpringSpigotBootstrapper.initialize(this, new SpringApplicationBuilder().bannerMode(Banner.Mode.OFF).sources(BanApplication.class));
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        this.injector = BansInjector.createInjector(
+                List.of(new PluginModule(this, new ConfigLoader(this).load()))
+        );
+
+        var playerJoinListener = injector.getInstance(PlayerJoinListener.class);
+
+        this.getServer().getPluginManager().registerEvents(playerJoinListener, this);
+
+        var banCommand = injector.getInstance(BanCommand.class);
+        Objects.requireNonNull(this.getCommand("ban")).setExecutor(banCommand);
     }
 
     @Override
     public void onDisable() {
-        context.close();
-        context = null;
+        this.injector = null;
     }
 }

@@ -1,19 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.1'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "com.github.johnrengelman.shadow" version "7.1.0"
-    id "idea"
-    id 'java'
 }
 
 group = 'at.nipe.playlegend'
 version = '0.0.1-alpha'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
+
 
 allprojects {
     apply plugin: 'idea'
@@ -33,12 +25,26 @@ allprojects {
         maven { url = 'https://maven.repository.redhat.com/ga/' }
     }
 
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
     dependencies {
+        // Core DI
+        implementation 'com.google.inject:guice:5.0.1'
+        implementation 'com.netflix.governator:governator:1.17.12'
+        implementation 'com.netflix.governator:governator-annotations:1.17.12'
+
+        // logging
         implementation 'commons-logging:commons-logging:1.2'
 
+        // lombok
         compileOnly 'org.projectlombok:lombok:1.18.22'
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
+        // test dependencies
         testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
@@ -47,7 +53,7 @@ allprojects {
     }
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
     }
 
     test {

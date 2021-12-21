@@ -1,4 +1,8 @@
 rootProject.name = 'playlegend-bans'
 include 'bans-plugin'
 include 'persistence'
+include 'dependency-injection'
+include 'shared'
+include 'localization'
+include 'context'
 
