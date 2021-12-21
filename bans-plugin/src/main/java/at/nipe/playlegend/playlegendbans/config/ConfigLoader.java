@@ -5,10 +5,17 @@ import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Level;
-
+/**
+ * Class that loads the config.yml in the plugins datafolder.
+ * This is needed to store some basic configuration for the database connection
+ * or some plugin tweaks.
+ *
+ *
+ */
 @Log
 public class ConfigLoader {
+
+  private static final String DATABASE_URL_REGX = "jdbc:mysql://";
 
   private final JavaPlugin plugin;
 
@@ -16,6 +23,12 @@ public class ConfigLoader {
     this.plugin = plugin;
   }
 
+  /**
+   * Loads the config
+   *
+   * @throws IllegalArgumentException if url matches not a jdbc url or if url is empty
+   * @return constructed config object from config file
+   */
   public Config load() {
     var config = plugin.getConfig();
     var configSection = config.getConfigurationSection("mysql");
@@ -23,14 +36,20 @@ public class ConfigLoader {
     String url = null, user = null, password = null;
 
     try {
-      assert configSection != null;
       url = configSection.getString("url");
+
+      if (url == null || !url.startsWith(DATABASE_URL_REGX)) {
+        throw new IllegalArgumentException(
+            "Database Url in configuration is not matching the required scheme (jdbc:mysql://)");
+      }
+      // optional parameters
       user = configSection.getString("user");
       password = configSection.getString("password");
     } catch (NullPointerException ex) {
-      log.log(Level.SEVERE, "Missing part of mysql configuration in config.yml", ex);
-      Bukkit.getServer().getPluginManager().disablePlugin(this.plugin);
-      throw ex;
+      if (url == null) {
+        Bukkit.getServer().getPluginManager().disablePlugin(this.plugin);
+        throw new IllegalArgumentException("Missing part of mysql configuration in config.yml", ex);
+      }
     }
 
     return new Config(url, user, password);

@@ -1,13 +1,13 @@
 package at.nipe.playlegend.playlegendbans.commands;
 
 import at.nipe.playlegend.playlegendbans.BanFacade;
-import at.nipe.playlegend.playlegendbans.context.Context;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
 import at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper;
 import at.nipe.playlegend.playlegendbans.localization.LocalHelper;
 import at.nipe.playlegend.playlegendbans.localization.LocalKeys;
 import at.nipe.playlegend.playlegendbans.localization.LocalizationContainer;
 import at.nipe.playlegend.playlegendbans.parser.durationparser.DurationParser;
+import at.nipe.playlegend.playlegendbans.shared.exceptions.AccountNotFoundException;
 import at.nipe.playlegend.playlegendbans.shared.exceptions.UnknownDurationUnitException;
 import at.nipe.playlegend.playlegendbans.shared.resolution.Component;
 import lombok.extern.java.Log;
@@ -24,18 +24,22 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
+/**
+ * Command that bans a player for a given duration and a message.
+ *
+ * Usage: /ban player [duration in format 5w7d4h] [message or reason]
+ *
+ * @author NoSleep - NIPE
+ */
 @Log
 @Component
 public class BanCommand implements CommandExecutor {
 
-  private final Context context;
   private final ResourceBundle resourceBundle;
   private final BanFacade banFacade;
 
   @Inject
-  public BanCommand(
-      Context context, LocalizationContainer localizationContainer, BanFacade banFacade) {
-    this.context = context;
+  public BanCommand(LocalizationContainer localizationContainer, BanFacade banFacade) {
     this.resourceBundle = localizationContainer.getResourceBundle();
     this.banFacade = banFacade;
   }
@@ -43,37 +47,22 @@ public class BanCommand implements CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (!(sender instanceof ConsoleCommandSender) && !sender.hasPermission("playlegend.ban")) {
-      context.runInContext(
-          sender,
-          (ctxSender) -> {
-            ctxSender.sendMessage(
-                LocalHelper.translate(this.resourceBundle, LocalKeys.NO_PERMISSION));
-            return null;
-          });
+      sender.sendMessage(LocalHelper.translate(this.resourceBundle, LocalKeys.NO_PERMISSION));
       return true;
     }
     // /ban <player> <duration> <message>
     if (args.length < 1) {
-      context.runInContext(
-          sender,
-          (ctxSender) -> {
-            ctxSender.sendMessage(
-                LocalHelper.translate(this.resourceBundle, LocalKeys.NOT_ENOUGH_ARGS));
-            return null;
-          });
+      sender.sendMessage(LocalHelper.translate(this.resourceBundle, LocalKeys.NOT_ENOUGH_ARGS));
       return false;
     }
 
     var player = Bukkit.getPlayerExact(args[0]);
     if (player == null) {
-      context.runInContext(
-          sender,
-          ContextProperties.of(LocalePlaceholderHelper.buildTargetPlayerContext(args[0])),
-          (ctxSender, ctxProps) -> {
-            ctxSender.sendMessage(
-                LocalHelper.translate(this.resourceBundle, ctxProps, LocalKeys.PLAYER_NOT_ONLINE));
-            return null;
-          });
+      sender.sendMessage(
+          LocalHelper.translate(
+              this.resourceBundle,
+              ContextProperties.of(LocalePlaceholderHelper.buildTargetPlayerContext(args[0])),
+              LocalKeys.PLAYER_NOT_ONLINE));
       return true;
     }
 
@@ -86,16 +75,14 @@ public class BanCommand implements CommandExecutor {
     try {
       until = new DurationParser().parse(duration);
     } catch (UnknownDurationUnitException e) {
-      context.runInContext(
-          sender,
-          ContextProperties.of(LocalePlaceholderHelper.buildAllowedUnitsContext()),
-          (ctxSender, ctxProps) -> {
-            ctxSender.sendMessage(
-                LocalHelper.translate(
-                    this.resourceBundle, ctxProps, LocalKeys.INVALID_DURATION_UNIT));
-            return null;
-          });
-      log.log(Level.SEVERE, "An unknown unit has been provided", e);
+      sender.sendMessage(
+          LocalHelper.translate(
+              this.resourceBundle,
+              ContextProperties.of(
+                  LocalePlaceholderHelper.combine(
+                      LocalePlaceholderHelper.buildPlayerContext(sender),
+                      LocalePlaceholderHelper.buildAllowedUnitsContext())),
+              LocalKeys.INVALID_DURATION_UNIT));
       return true;
     }
 
@@ -107,22 +94,27 @@ public class BanCommand implements CommandExecutor {
 
     try {
       var ban = this.banFacade.banPlayer(player, sender, until, message);
-      context.runInContext(
-          sender,
-          ContextProperties.of(LocalePlaceholderHelper.buildBanContext(ban)),
-          (ctxSender, ctxProps) -> {
-            player.kickPlayer(
-                LocalHelper.translate(this.resourceBundle, ctxProps, LocalKeys.BAN_MESSAGE));
-            return null;
-          });
 
+      player.kickPlayer(
+          LocalHelper.translate(
+              this.resourceBundle,
+              ContextProperties.of(LocalePlaceholderHelper.buildBanContext(ban)),
+              LocalKeys.BAN_MESSAGE));
       return true;
     } catch (SQLException e) {
       sender.sendMessage(
-          LocalHelper.translate(this.resourceBundle, context, LocalKeys.PLAYER_BANNED_ERROR));
-      log.severe("There was an error whilst banning a player");
+          LocalHelper.translate(
+              this.resourceBundle,
+              ContextProperties.of(LocalePlaceholderHelper.buildPlayerContext(sender)),
+              LocalKeys.PLAYER_BANNED_ERROR));
+      log.log(Level.SEVERE, "SQL Error occurred whilst banning player " + player.getName(), e);
+    } catch (AccountNotFoundException e) {
+      sender.sendMessage(
+      LocalHelper.translate(
+              this.resourceBundle,
+              ContextProperties.of(LocalePlaceholderHelper.buildPlayerContext(sender)),
+              LocalKeys.));
     }
-
     return false;
   }
 }

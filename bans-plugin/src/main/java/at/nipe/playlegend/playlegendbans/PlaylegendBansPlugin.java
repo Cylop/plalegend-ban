@@ -34,7 +34,8 @@ public class PlaylegendBansPlugin extends JavaPlugin {
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Ban.class);
       } catch (SQLException e) {
-        log.severe("Seems like the database is not connected");
+        throw new IllegalArgumentException(
+            "There was an error whilst trying to create the tables in the database", e);
       }
     }
 
