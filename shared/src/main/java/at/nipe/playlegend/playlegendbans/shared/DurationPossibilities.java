@@ -11,11 +11,11 @@ import java.util.function.BiFunction;
 @Getter
 public enum DurationPossibilities {
   YEAR("y", LocalDateTime::plusYears),
-  MONTH("m", LocalDateTime::plusMonths),
+  MONTH("M", LocalDateTime::plusMonths),
   WEEK("w", LocalDateTime::plusWeeks),
   DAY("d", LocalDateTime::plusDays),
   HOUR("h", LocalDateTime::plusHours),
-  MINUTE("min", LocalDateTime::plusMinutes),
+  MINUTE("m", LocalDateTime::plusMinutes),
   SECOND("s", LocalDateTime::plusSeconds);
 
   private final String identifier;

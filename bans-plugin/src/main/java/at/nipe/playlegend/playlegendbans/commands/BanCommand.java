@@ -71,7 +71,7 @@ public class BanCommand implements CommandExecutor {
           ContextProperties.of(LocalePlaceholderHelper.buildTargetPlayerContext(args[0])),
           (ctxSender, ctxProps) -> {
             ctxSender.sendMessage(
-                LocalHelper.translate(this.resourceBundle, context, LocalKeys.PLAYER_NOT_ONLINE));
+                LocalHelper.translate(this.resourceBundle, ctxProps, LocalKeys.PLAYER_NOT_ONLINE));
             return null;
           });
       return true;
@@ -92,7 +92,7 @@ public class BanCommand implements CommandExecutor {
           (ctxSender, ctxProps) -> {
             ctxSender.sendMessage(
                 LocalHelper.translate(
-                    this.resourceBundle, context, LocalKeys.INVALID_DURATION_UNIT));
+                    this.resourceBundle, ctxProps, LocalKeys.INVALID_DURATION_UNIT));
             return null;
           });
       log.log(Level.SEVERE, "An unknown unit has been provided", e);
@@ -112,7 +112,7 @@ public class BanCommand implements CommandExecutor {
           ContextProperties.of(LocalePlaceholderHelper.buildBanContext(ban)),
           (ctxSender, ctxProps) -> {
             player.kickPlayer(
-                LocalHelper.translate(this.resourceBundle, context, LocalKeys.BAN_MESSAGE));
+                LocalHelper.translate(this.resourceBundle, ctxProps, LocalKeys.BAN_MESSAGE));
             return null;
           });
 

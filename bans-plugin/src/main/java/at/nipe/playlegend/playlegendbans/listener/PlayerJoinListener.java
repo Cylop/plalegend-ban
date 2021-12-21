@@ -51,7 +51,7 @@ public class PlayerJoinListener implements Listener {
           User.builder().id(player.getUniqueId()).name(player.getName()).build());
     } catch (SQLException e) {
       log.severe(LocalHelper.translate(this.resourceBundle, LocalKeys.CREATING_USER_ACCOUNT_ERROR));
-      e.printStackTrace();
+      throw e;
     }
 
     var banOpt = this.banService.getLongestBan(player.getUniqueId());
@@ -65,7 +65,7 @@ public class PlayerJoinListener implements Listener {
           (ctxSender, ctxProps) -> {
             event.disallow(
                 PlayerLoginEvent.Result.KICK_BANNED,
-                LocalHelper.translate(this.resourceBundle, context, LocalKeys.BAN_MESSAGE));
+                LocalHelper.translate(this.resourceBundle, ctxProps, LocalKeys.BAN_MESSAGE));
             return null;
           });
     }

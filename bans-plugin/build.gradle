@@ -31,6 +31,8 @@ dependencies {
     implementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
     //implementation 'com.github.resource4j:resource4j-core:3.3.0'
 
+    compileOnly 'com.j256.ormlite:ormlite-jdbc:5.7'
+
     implementation(project(":shared"))
     implementation(project(":context"))
     implementation(project(":dependency-injection"))

@@ -1,8 +1,11 @@
 package at.nipe.playlegend.playlegendbans.shared.utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@UtilityClass
 public class DateHelper {
 
   public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm");

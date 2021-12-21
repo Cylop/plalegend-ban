@@ -30,6 +30,7 @@ public class ConfigLoader {
     } catch (NullPointerException ex) {
       log.log(Level.SEVERE, "Missing part of mysql configuration in config.yml", ex);
       Bukkit.getServer().getPluginManager().disablePlugin(this.plugin);
+      throw ex;
     }
 
     return new Config(url, user, password);

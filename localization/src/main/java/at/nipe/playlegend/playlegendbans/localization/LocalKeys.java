@@ -1,5 +1,8 @@
 package at.nipe.playlegend.playlegendbans.localization;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public final class LocalKeys {
 
   public static final String PLUGIN_NAME = "plugin.name";
@@ -15,6 +18,4 @@ public final class LocalKeys {
 
   public static final String DEFAULT_BAN_REASON = "ban.default-reason";
   public static final String BAN_MESSAGE = "ban.message";
-
-  private LocalKeys() {}
 }

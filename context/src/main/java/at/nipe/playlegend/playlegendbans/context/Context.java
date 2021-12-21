@@ -87,6 +87,7 @@ public class Context {
     setSender(sender);
     setContextProperties(contextProperties);
     try {
+      System.out.println(contextProperties);
       return function.apply(sender, contextProperties);
     } finally {
       setSender(oldSender);
