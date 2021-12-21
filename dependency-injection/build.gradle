@@ -1,0 +1,17 @@
+group 'at.nipe.playlegend'
+version '0.0.1-alpha'
+
+
+dependencies {
+    implementation project(":shared")
+
+    implementation 'org.reflections:reflections:0.10.2'
+
+    // Core DI
+    implementation 'com.google.inject:guice:5.0.1'
+    implementation 'com.netflix.governator:governator:1.17.12'
+    implementation 'com.netflix.governator:governator-annotations:1.17.12'
+
+
+    implementation project(":persistence")
+}
