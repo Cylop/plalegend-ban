@@ -1,11 +1,10 @@
 package at.nipe.playlegend.playlegendbans.localization;
 
-import at.nipe.playlegend.playlegendbans.context.Context;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
 import lombok.Synchronized;
-import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class LocalHelper {
@@ -18,7 +17,8 @@ public class LocalHelper {
 
   @Synchronized
   public static String translate(
-      ResourceBundle resourceBundle, ContextProperties ctxProperties, String key) {
+      ResourceBundle resourceBundle, ContextProperties ctxProperties, String key)
+      throws NullPointerException, MissingResourceException {
     if (resourceBundle == null) throw new NullPointerException("Resourcebundle must not be null");
 
     var message = ChatColor.translateAlternateColorCodes('&', resourceBundle.getString(key));
@@ -29,10 +29,5 @@ public class LocalHelper {
     }
 
     return message;
-  }
-
-  public static String translate(ResourceBundle resourceBundle, Context context, String key) {
-    Validate.notNull(context);
-    return translate(resourceBundle, context.getContextProperties(), key);
   }
 }
