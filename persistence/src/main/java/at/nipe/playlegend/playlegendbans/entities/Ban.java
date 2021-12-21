@@ -1,63 +1,47 @@
 package at.nipe.playlegend.playlegendbans.entities;
 
+import at.nipe.playlegend.playlegendbans.dao.BasicBanDao;
+import at.nipe.playlegend.playlegendbans.shared.entities.BanEntity;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import lombok.*;
 
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "bans")
-public class Ban {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+@DatabaseTable(tableName = "bans", daoClass = BasicBanDao.class)
+public class Ban implements BanEntity {
+
+    @DatabaseField(generatedId = true)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "banned_id", nullable = false)
+    @DatabaseField(canBeNull = false, foreignColumnName = "id", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
     private User banned;
 
-    @ManyToOne
-    @JoinColumn(name = "bannedBy_id")
+    @DatabaseField(canBeNull = false, foreignColumnName = "id", foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
     private User bannedBy;
 
+    @DatabaseField(canBeNull = false)
     private String reason;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @DatabaseField(canBeNull = false)
     private Date until;
 
+    @DatabaseField
     private boolean permanent;
 
+    @DatabaseField
     private boolean active;
 
     @Setter(AccessLevel.NONE)
-    @Temporal(TemporalType.TIMESTAMP)
     @Builder.Default
+    @DatabaseField
     private Date createdAt = new Date();
-
-    @Version
-    private long version;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Ban ban = (Ban) o;
-        return id != null && Objects.equals(id, ban.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 
     @Override
     public String toString() {
@@ -69,7 +53,6 @@ public class Ban {
                 "until = " + until + ", " +
                 "permanent = " + permanent + ", " +
                 "active = " + active + ", " +
-                "createdAt = " + createdAt + ", " +
-                "version = " + version + ")";
+                "createdAt = " + createdAt + ")";
     }
 }

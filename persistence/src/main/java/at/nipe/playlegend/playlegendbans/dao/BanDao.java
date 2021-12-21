@@ -1,21 +1,18 @@
-package at.nipe.playlegend.playlegendbans.services.bans;
+package at.nipe.playlegend.playlegendbans.dao;
 
 import at.nipe.playlegend.playlegendbans.entities.Ban;
+import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface BanService {
+public interface BanDao extends Dao<Ban, Long> {
 
-    List<Ban> findAllForUser(UUID uuid) throws SQLException;
+    List<Ban> findAllForUser(UUID banned) throws SQLException;
 
     List<Ban> findAllByUser(UUID uuid) throws SQLException;
-
-    Ban createIfNotExists(Ban ban) throws SQLException;
-
-    int delete(Ban ban) throws SQLException;
 
     boolean unban(UUID user) throws SQLException;
 
