@@ -62,7 +62,10 @@ public class LocalizationContainer {
     var configFolder = new File(this.plugin.getDataFolder(), "config");
 
     if (!configFolder.exists()) {
-      configFolder.mkdirs();
+      boolean created = configFolder.mkdirs();
+      if (!created) {
+        throw new IOException("Config folder could not be created");
+      }
     }
 
     var listedFiles =
