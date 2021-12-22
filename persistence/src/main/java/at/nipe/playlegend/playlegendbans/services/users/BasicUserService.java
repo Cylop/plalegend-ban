@@ -3,6 +3,7 @@ package at.nipe.playlegend.playlegendbans.services.users;
 import at.nipe.playlegend.playlegendbans.dao.UserDao;
 import at.nipe.playlegend.playlegendbans.entities.User;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -18,18 +19,18 @@ public class BasicUserService implements UserService {
   }
 
   @Override
-  public Optional<User> findById(UUID uuid) throws SQLException {
+  public Optional<User> findById(@Nonnull UUID uuid) throws SQLException {
     var user = this.userDao.queryForId(uuid);
     return user != null ? Optional.of(user) : Optional.empty();
   }
 
   @Override
-  public Optional<User> findByName(String name) throws SQLException {
+  public Optional<User> findByName(@Nonnull String name) throws SQLException {
     return this.userDao.findUserByName(name);
   }
 
   @Override
-  public User createIfNotExists(User user) throws SQLException {
+  public User createIfNotExists(@Nonnull User user) throws SQLException {
     return this.userDao.createIfNotExists(user);
   }
 }

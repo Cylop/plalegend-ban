@@ -3,6 +3,7 @@ package at.nipe.playlegend.playlegendbans.services.bans;
 import at.nipe.playlegend.playlegendbans.dao.BanDao;
 import at.nipe.playlegend.playlegendbans.entities.Ban;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
@@ -19,37 +20,37 @@ public class BasicBanService implements BanService {
   }
 
   @Override
-  public List<Ban> findAllForUser(UUID uuid) throws SQLException {
+  public List<Ban> findAllForUser(@Nonnull UUID uuid) throws SQLException {
     return this.banDao.findAllForUser(uuid);
   }
 
   @Override
-  public List<Ban> findAllByUser(UUID uuid) throws SQLException {
+  public List<Ban> findAllByUser(@Nonnull UUID uuid) throws SQLException {
     return this.banDao.findAllByUser(uuid);
   }
 
   @Override
-  public Ban createIfNotExists(Ban ban) throws SQLException {
+  public Ban createIfNotExists(@Nonnull Ban ban) throws SQLException {
     return this.banDao.createIfNotExists(ban);
   }
 
   @Override
-  public int delete(Ban ban) throws SQLException {
+  public int delete(@Nonnull Ban ban) throws SQLException {
     return this.banDao.delete(ban);
   }
 
   @Override
-  public boolean unban(UUID user) throws SQLException {
-    return this.banDao.unban(user);
+  public boolean unban(@Nonnull UUID uuid) throws SQLException {
+    return this.banDao.unban(uuid);
   }
 
   @Override
-  public boolean isBanned(UUID user) throws SQLException {
+  public boolean isBanned(@Nonnull UUID user) throws SQLException {
     return this.banDao.isBanned(user);
   }
 
   @Override
-  public Optional<Ban> getLongestBan(UUID user) throws SQLException {
+  public Optional<Ban> getLongestBan(@Nonnull UUID user) throws SQLException {
     return this.banDao.getLongestBan(user);
   }
 }

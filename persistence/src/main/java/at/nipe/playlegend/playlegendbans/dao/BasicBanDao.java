@@ -29,7 +29,7 @@ public class BasicBanDao extends BaseDaoImpl<Ban, Long> implements BanDao {
   public boolean unban(UUID user) throws SQLException {
     var builder = updateBuilder();
     builder.updateColumnValue("active", "false");
-    builder.where().eq("banned_id", "user");
+    builder.where().eq("banned_id", user);
     return builder.update() > 0;
   }
 

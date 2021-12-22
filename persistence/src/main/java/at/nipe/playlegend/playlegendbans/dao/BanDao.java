@@ -14,7 +14,7 @@ public interface BanDao extends Dao<Ban, Long> {
 
   List<Ban> findAllByUser(UUID uuid) throws SQLException;
 
-  boolean unban(UUID user) throws SQLException;
+  boolean unban(UUID uuid) throws SQLException;
 
   boolean isBanned(UUID user) throws SQLException;
 
