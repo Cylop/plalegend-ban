@@ -32,7 +32,7 @@ public class LocalePlaceholderHelper {
   }
 
   public static List<Pair<String, String>> buildPlayerContext(@Nonnull String sender) {
-    return List.of(new Pair<>("player", sender), new Pair<>("player_uuid", null));
+    return List.of(new Pair<>("player", sender), new Pair<>("player_uuid", ""));
   }
 
   public static List<Pair<String, String>> buildPlayerContext(@Nonnull CommandSender sender) {
