@@ -4,6 +4,7 @@ import at.nipe.playlegend.playlegendbans.parser.Parser;
 import at.nipe.playlegend.playlegendbans.shared.DurationPossibilities;
 import at.nipe.playlegend.playlegendbans.shared.exceptions.UnknownDurationUnitException;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -32,8 +33,23 @@ public class DurationParser extends Parser<String, Date> {
    *     DurationPossibilities} for all possibilities
    */
   @Override
-  public Date parse(String input) throws UnknownDurationUnitException {
-    input = input.toLowerCase();
+  public Date parse(@Nonnull String input) throws UnknownDurationUnitException {
+    return this.parse(input, new Date());
+  }
+
+  /**
+   * This method is needed for testing
+   *
+   * <p>Validates, parses and returns current timestamp + parsed duration.
+   *
+   * @param input - duration in format 4w7s7d. Order doesn't matter and segments can be present
+   *     multiple times
+   * @return current timestamp + parsed duration
+   * @throws UnknownDurationUnitException if one of the segments is not valid. Like 4z {@link
+   *     DurationPossibilities} for all possibilities
+   */
+  protected Date parse(@Nonnull String input, @Nonnull Date startDate)
+      throws UnknownDurationUnitException {
     this.validate(input);
 
     Date currentDate = new Date();
@@ -68,7 +84,7 @@ public class DurationParser extends Parser<String, Date> {
    * @return splitted input string as map
    * @throws UnknownDurationUnitException if the unit is unknown
    */
-  private Map<DurationPossibilities, Long> getSegments(String input)
+  private Map<DurationPossibilities, Long> getSegments(@Nonnull String input)
       throws UnknownDurationUnitException {
     final var segments = new HashMap<DurationPossibilities, Long>();
 

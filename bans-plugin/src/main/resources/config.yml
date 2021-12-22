@@ -2,3 +2,5 @@ mysql:
   url: enter url
   user: username
   password: passwort
+general:
+  create_tables: true

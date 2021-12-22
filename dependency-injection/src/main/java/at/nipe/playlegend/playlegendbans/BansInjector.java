@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,11 +15,12 @@ public class BansInjector {
     return createInjector(null, null);
   }
 
-  public static Injector createInjector(List<Module> beforeModules) {
+  public static Injector createInjector(@Nullable List<Module> beforeModules) {
     return createInjector(beforeModules, null);
   }
 
-  public static Injector createInjector(List<Module> beforeModules, List<Module> afterModules) {
+  public static Injector createInjector(
+      @Nullable List<Module> beforeModules, @Nullable List<Module> afterModules) {
     if (beforeModules == null) beforeModules = new ArrayList<>();
     if (afterModules == null) afterModules = new ArrayList<>();
 

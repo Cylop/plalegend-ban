@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.UUID;
  *
  * <p>Utilities to get sender id by the object and vice-versa, since storing the instance is not a
  * good practice (can cause memory issues if the sender quits and the object keep alive for too
- * long)
+ * long)</p>
  */
 @Singleton
 @Component
@@ -32,16 +33,13 @@ public class ServerUtil {
   }
 
   /**
-   * Get the most unique id available for the {@param sender}. If the server is in online mode, it
+   * Get the unique id available for the {@param sender}. If the server is in online mode, it
    * will return the {@param sender} UUID, otherwise will return the player username in lower case.
    *
    * @param sender the sender to get the id from
    * @return the sender id, null if null sender input
    */
-  public String getSenderId(CommandSender sender) {
-    if (sender == null) {
-      return null;
-    }
+  public String getSenderId(@Nonnull CommandSender sender) {
     if (!(sender instanceof OfflinePlayer player)) {
       return CONSOLE_SENDER_ID;
     }
@@ -57,10 +55,7 @@ public class ServerUtil {
    * @param id the id of the sender
    * @return the sender associated with {@param id}, null if null id input
    */
-  public CommandSender getSenderFromId(String id) {
-    if (id == null) {
-      return null;
-    }
+  public CommandSender getSenderFromId(@Nonnull String id) {
     if (CONSOLE_SENDER_ID.equals(id)) {
       return server.getConsoleSender();
     }

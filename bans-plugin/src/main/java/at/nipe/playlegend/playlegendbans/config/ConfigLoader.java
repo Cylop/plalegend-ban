@@ -6,11 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Class that loads the config.yml in the plugins datafolder.
- * This is needed to store some basic configuration for the database connection
- * or some plugin tweaks.
- *
- *
+ * Class that loads the config.yml in the plugins data-folder. This is needed to store some basic
+ * configuration for the database connection and some plugin tweaks.
  */
 @Log
 public class ConfigLoader {

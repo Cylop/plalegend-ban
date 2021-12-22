@@ -2,6 +2,7 @@ package at.nipe.playlegend.playlegendbans.context;
 
 import at.nipe.playlegend.playlegendbans.shared.utils.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,7 @@ public class ContextProperties {
 
   private final Map<String, String> properties = new ConcurrentHashMap<>();
 
-  public static ContextProperties of(List<Pair<String, String>> pairs) {
+  public static ContextProperties of(@Nonnull List<Pair<String, String>> pairs) {
     if (pairs == null || pairs.size() == 0)
       throw new IllegalArgumentException("Provided pairs in context must not be null or empty");
 

@@ -25,6 +25,7 @@ repositories {
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
     maven { url = 'https://maven.repository.redhat.com/ga/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -41,6 +42,8 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.18:1.14.0'
 }
 
 java {

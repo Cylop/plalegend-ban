@@ -2,6 +2,8 @@ package at.nipe.playlegend.playlegendbans.parser;
 
 import at.nipe.playlegend.playlegendbans.shared.exceptions.ParserException;
 
+import javax.annotation.Nonnull;
+
 /**
  * Abstract class to provide some basic functionality for custom parser
  *
@@ -9,5 +11,5 @@ import at.nipe.playlegend.playlegendbans.shared.exceptions.ParserException;
  * @param <O> Output
  */
 public abstract class Parser<I, O> {
-  public abstract O parse(I input) throws ParserException;
+  public abstract O parse(@Nonnull I input) throws ParserException;
 }
