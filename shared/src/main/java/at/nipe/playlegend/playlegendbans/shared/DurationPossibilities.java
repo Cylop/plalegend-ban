@@ -2,6 +2,7 @@ package at.nipe.playlegend.playlegendbans.shared;
 
 import lombok.Getter;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +32,8 @@ public enum DurationPossibilities {
     return Arrays.stream(values()).map(DurationPossibilities::getIdentifier).toList();
   }
 
-  public static DurationPossibilities fromIdentifier(String identifier) {
+  public static DurationPossibilities fromIdentifier(@Nonnull String identifier) {
     for (var unit : values()) if (Objects.equals(unit.getIdentifier(), identifier)) return unit;
-
     return null;
   }
 }

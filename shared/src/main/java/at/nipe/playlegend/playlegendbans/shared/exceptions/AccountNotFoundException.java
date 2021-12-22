@@ -1,12 +1,18 @@
 package at.nipe.playlegend.playlegendbans.shared.exceptions;
 
+import lombok.Getter;
+
+@Getter
 public class AccountNotFoundException extends Exception {
 
-  public AccountNotFoundException(String errorMessage) {
-    this(errorMessage, null);
+  private final String playerName;
+
+  public AccountNotFoundException(String errorMessage, String playerName) {
+    this(errorMessage, null, playerName);
   }
 
-  public AccountNotFoundException(String errorMessage, Throwable err) {
+  public AccountNotFoundException(String errorMessage, Throwable err, String playerName) {
     super(errorMessage, err);
+    this.playerName = playerName;
   }
 }
