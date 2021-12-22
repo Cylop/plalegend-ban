@@ -13,7 +13,7 @@ public class ContextProperties {
   private final Map<String, String> properties = new ConcurrentHashMap<>();
 
   public static ContextProperties of(@Nonnull List<Pair<String, String>> pairs) {
-    if (pairs == null || pairs.size() == 0)
+    if (pairs.size() == 0)
       throw new IllegalArgumentException("Provided pairs in context must not be null or empty");
 
     final var ctxProperties = new ContextProperties();
@@ -25,7 +25,7 @@ public class ContextProperties {
     return this.properties.get(key);
   }
 
-  public void put(String key, String property) {
+  public void put(@Nonnull String key, @Nonnull String property) {
     this.properties.put(key, property);
   }
 
