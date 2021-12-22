@@ -64,7 +64,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
 
     var duration = "999y";
     if (args.length >= 2) {
-      duration = args[1]; // duration
+      duration = args[1];
     }
 
     Date until;
@@ -101,7 +101,6 @@ public class BanCommand implements CommandExecutor, TabCompleter {
               ContextProperties.of(LocalePlaceholderHelper.buildBanContext(ban)),
               LocalKeys.BAN_MESSAGE));
       }
-
       sender.sendMessage(LocalHelper.translate(this.resourceBundle, ContextProperties.of(LocalePlaceholderHelper.combine(LocalePlaceholderHelper.buildPlayerContext(sender), LocalePlaceholderHelper.buildTargetPlayerContext(playerName))), LocalKeys.SUCCESS_BAN_SUCCESSFUL)
       );
       return true;
