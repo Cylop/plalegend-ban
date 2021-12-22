@@ -2,9 +2,8 @@ package at.nipe.playlegend.playlegendbans.commands;
 
 import at.nipe.playlegend.playlegendbans.BanFacade;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
-import at.nipe.playlegend.playlegendbans.localization.LocalHelper;
-import at.nipe.playlegend.playlegendbans.localization.LocalKeys;
-import at.nipe.playlegend.playlegendbans.localization.LocalizationContainer;
+import at.nipe.playlegend.playlegendbans.localization.MessageService;
+import at.nipe.playlegend.playlegendbans.localization.Messages;
 import at.nipe.playlegend.playlegendbans.parser.durationparser.DurationParser;
 import at.nipe.playlegend.playlegendbans.shared.DurationPossibilities;
 import at.nipe.playlegend.playlegendbans.shared.ExampleReasons;
@@ -23,7 +22,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -34,41 +32,40 @@ import static at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper.
  *
  * <p>Usage: /ban player [duration in format 5w7d4h] [message or reason]</p>
  *
- * @author NoSleep - NIPE
+ * @author NoSleep - Nipe
  */
 @Log
 @Component
 public class BanCommand implements CommandExecutor, TabCompleter {
 
-  private final ResourceBundle resourceBundle;
+  private final MessageService messageService;
   private final BanFacade banFacade;
 
   @Inject
-  public BanCommand(LocalizationContainer localizationContainer, BanFacade banFacade) {
-    this.resourceBundle = localizationContainer.getResourceBundle();
+  public BanCommand(@Nonnull MessageService messageService, @Nonnull BanFacade banFacade) {
+    this.messageService = messageService;
     this.banFacade = banFacade;
   }
 
   @Override
   public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
     if (!(sender instanceof ConsoleCommandSender) && !sender.hasPermission("playlegend.ban")) {
-      sender.sendMessage(LocalHelper.translate(this.resourceBundle, LocalKeys.ERRORS_NO_PERMISSION));
+      sender.sendMessage(this.messageService.receive(Messages.ERRORS_NO_PERMISSION));
       return true;
     }
 
     // /ban <player> <duration> <message>
     if (args.length < 1) {
-      sender.sendMessage(LocalHelper.translate(this.resourceBundle, LocalKeys.ERRORS_BAN_ARGS_NOT_ENOUGH));
+      sender.sendMessage(this.messageService.receive(Messages.ERRORS_BAN_ARGS_NOT_ENOUGH));
       return false;
     }
 
     var playerName = args[0];
 
     if(sender.getName().equals(playerName)) {
-      sender.sendMessage(LocalHelper.translate(
-              this.resourceBundle,
+      sender.sendMessage(this.messageService.receive(
               ContextProperties.of(buildPlayerContext(sender)),
-              LocalKeys.ERRORS_BAN_SELF_BAN));
+              Messages.ERRORS_BAN_SELF_BAN));
       return true;
     }
 
@@ -81,15 +78,13 @@ public class BanCommand implements CommandExecutor, TabCompleter {
     try {
       until = new DurationParser().parse(duration);
     } catch (UnknownDurationUnitException e) {
-      sender.sendMessage(
-          LocalHelper.translate(
-              this.resourceBundle,
+      sender.sendMessage(this.messageService.receive(
               ContextProperties.of(combine(buildPlayerContext(sender), buildAllowedUnitsContext())),
-              LocalKeys.ERRORS_DURATION_INVALID_UNIT));
+              Messages.ERRORS_DURATION_INVALID_UNIT));
       return true;
     }
 
-    var message = LocalHelper.translate(this.resourceBundle, LocalKeys.BAN_DEFAULT_REASON);
+    var message = this.messageService.receive(Messages.BAN_DEFAULT_REASON);
 
     if (args.length >= 3) {
       message = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
@@ -103,27 +98,21 @@ public class BanCommand implements CommandExecutor, TabCompleter {
       var player = Bukkit.getPlayerExact(playerName);
       if(player != null) {
         player.kickPlayer(
-          LocalHelper.translate(
-              this.resourceBundle,
-              ContextProperties.of(buildBanContext(ban)),
-              LocalKeys.BAN_MESSAGE));
+                this.messageService.receive(ContextProperties.of(buildBanContext(ban)),
+              Messages.BAN_MESSAGE));
       }
-      sender.sendMessage(LocalHelper.translate(this.resourceBundle, ContextProperties.of(combine(buildPlayerContext(sender), buildTargetPlayerContext(playerName))), LocalKeys.SUCCESS_BAN_SUCCESSFUL)
+      sender.sendMessage(this.messageService.receive(ContextProperties.of(combine(buildPlayerContext(sender), buildTargetPlayerContext(playerName))), Messages.SUCCESS_BAN_SUCCESSFUL)
       );
       return true;
     } catch (SQLException e) {
       sender.sendMessage(
-          LocalHelper.translate(
-              this.resourceBundle,
-              ContextProperties.of(buildPlayerContext(sender)),
-              LocalKeys.ERRORS_BAN_ERROR));
+              this.messageService.receive(ContextProperties.of(buildPlayerContext(sender)),
+              Messages.ERRORS_BAN_ERROR));
       log.log(Level.SEVERE, String.format("SQL Error occurred whilst banning player %s", playerName), e);
     } catch (AccountNotFoundException e) {
       sender.sendMessage(
-          LocalHelper.translate(
-              this.resourceBundle,
-              ContextProperties.of(buildPlayerContext(e.getPlayerName())),
-              LocalKeys.ERRORS_USER_NO_ACCOUNT));
+              this.messageService.receive(ContextProperties.of(buildPlayerContext(e.getPlayerName())),
+              Messages.ERRORS_USER_NO_ACCOUNT));
     }
     return false;
   }

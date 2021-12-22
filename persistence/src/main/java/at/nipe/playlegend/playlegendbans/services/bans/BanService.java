@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Service for {@link Ban} to provide the required functions to handle bans
+ *
+ * @author NoSleep - Nipe
+ */
 public interface BanService {
 
   List<Ban> findAllForUser(@Nonnull UUID uuid) throws SQLException;

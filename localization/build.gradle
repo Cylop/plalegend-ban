@@ -1,9 +1,9 @@
 group 'at.nipe.playlegend'
-version '0.0.1-alpha'
+version = '0.0.2'
 
 dependencies {
     implementation project(":shared")
     implementation project(":context")
 
-    implementation 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
 }

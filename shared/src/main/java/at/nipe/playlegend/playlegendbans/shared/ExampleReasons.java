@@ -4,6 +4,11 @@ import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
+/**
+ * Class that provides some sample ban reasons
+ *
+ * @author NoSleep - Nipe
+ */
 @UtilityClass
 public class ExampleReasons {
 

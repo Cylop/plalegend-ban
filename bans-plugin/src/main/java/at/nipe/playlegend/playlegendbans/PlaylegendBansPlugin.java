@@ -24,6 +24,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
+/**
+ * Main entry point of the bans plugin
+ *
+ * @author NoSleep - Nipe
+ */
 @Log
 public class PlaylegendBansPlugin extends JavaPlugin {
 

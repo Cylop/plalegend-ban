@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Dao that is the direct connection between database and service
+ *
+ * @author NoSleep - Nipe
+ */
 public interface BanDao extends Dao<Ban, Long> {
 
   List<Ban> findAllForUser(UUID banned) throws SQLException;

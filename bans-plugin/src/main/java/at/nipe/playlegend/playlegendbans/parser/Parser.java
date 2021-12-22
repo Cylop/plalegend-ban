@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
  *
  * @param <I> Input
  * @param <O> Output
+ *
+ * @author NoSleep - Nipe
  */
 public abstract class Parser<I, O> {
   public abstract O parse(@Nonnull I input) throws ParserException;

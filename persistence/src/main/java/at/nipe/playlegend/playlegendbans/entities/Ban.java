@@ -8,6 +8,11 @@ import lombok.*;
 
 import java.util.Date;
 
+/**
+ * Java representative Database object for a ban
+ *
+ * @author NoSleep - Nipe
+ */
 @Getter
 @Setter
 @Builder

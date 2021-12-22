@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
+/**
+ * Possible durations for the duration parser
+ *
+ * @author NoSleep - Nipe
+ */
 @Getter
 public enum DurationPossibilities {
   YEAR("y", LocalDateTime::plusYears),

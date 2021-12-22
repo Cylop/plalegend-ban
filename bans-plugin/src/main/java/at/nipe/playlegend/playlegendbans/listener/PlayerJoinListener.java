@@ -3,9 +3,8 @@ package at.nipe.playlegend.playlegendbans.listener;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
 import at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper;
 import at.nipe.playlegend.playlegendbans.entities.User;
-import at.nipe.playlegend.playlegendbans.localization.LocalHelper;
-import at.nipe.playlegend.playlegendbans.localization.LocalKeys;
-import at.nipe.playlegend.playlegendbans.localization.LocalizationContainer;
+import at.nipe.playlegend.playlegendbans.localization.MessageService;
+import at.nipe.playlegend.playlegendbans.localization.Messages;
 import at.nipe.playlegend.playlegendbans.services.bans.BanService;
 import at.nipe.playlegend.playlegendbans.services.users.UserService;
 import at.nipe.playlegend.playlegendbans.shared.exceptions.AccountCreationException;
@@ -15,35 +14,40 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 /**
  * Handles Player login to prevent banned players from joining
  *
- * On first join, creates User account
+ * <p>On first join, creates User account
  *
  * @author NoSleep - Nipe
  */
 @Log
+@Singleton
 @Component
 public class PlayerJoinListener implements Listener {
 
-  private final ResourceBundle resourceBundle;
+  private final MessageService messageService;
   private final UserService userService;
   private final BanService banService;
 
   @Inject
   public PlayerJoinListener(
-      LocalizationContainer localizationContainer, UserService userService, BanService banService) {
-    this.resourceBundle = localizationContainer.getResourceBundle();
+      @Nonnull MessageService messageService,
+      @Nonnull UserService userService,
+      @Nonnull BanService banService) {
+    this.messageService = messageService;
     this.userService = userService;
     this.banService = banService;
   }
 
   @EventHandler
-  public void handlePlayerLogin(PlayerLoginEvent event) throws SQLException, AccountCreationException {
+  public void handlePlayerLogin(PlayerLoginEvent event)
+      throws SQLException, AccountCreationException {
     var player = event.getPlayer();
 
     try {
@@ -59,10 +63,9 @@ public class PlayerJoinListener implements Listener {
 
       event.disallow(
           PlayerLoginEvent.Result.KICK_BANNED,
-          LocalHelper.translate(
-              this.resourceBundle,
+          this.messageService.receive(
               ContextProperties.of(LocalePlaceholderHelper.buildBanContext(ban, player)),
-              LocalKeys.BAN_MESSAGE));
+              Messages.BAN_MESSAGE));
     }
   }
 }

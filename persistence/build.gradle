@@ -1,5 +1,5 @@
 group 'at.nipe.playlegend.bans'
-version '0.0.1-alpha'
+version = '0.0.2'
 
 repositories {
     mavenCentral()

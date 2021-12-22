@@ -12,6 +12,11 @@ import lombok.*;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Java representative Database object for a user
+ *
+ * @author NoSleep - Nipe
+ */
 @Getter
 @Setter
 @Builder

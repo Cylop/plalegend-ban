@@ -5,6 +5,12 @@ import com.google.inject.AbstractModule;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Module for DI that provides the most important Bukkit objects
+ * to Guice
+ *
+ * @author NoSleep - Nipe
+ */
 public class PluginModule extends AbstractModule {
 
   private final JavaPlugin plugin;

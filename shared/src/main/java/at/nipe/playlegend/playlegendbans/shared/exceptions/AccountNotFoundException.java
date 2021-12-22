@@ -2,6 +2,11 @@ package at.nipe.playlegend.playlegendbans.shared.exceptions;
 
 import lombok.Getter;
 
+/**
+ * Exception that gets thrown when no account for the specified player was found
+ *
+ * @author NoSleep - Nipe
+ */
 @Getter
 public class AccountNotFoundException extends Exception {
 

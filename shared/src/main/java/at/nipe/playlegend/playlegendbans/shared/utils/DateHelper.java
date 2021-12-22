@@ -6,6 +6,11 @@ import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Date utility to provide some bundled function for dates
+ *
+ * @author NoSleep - Nipe
+ */
 @UtilityClass
 public class DateHelper {
 

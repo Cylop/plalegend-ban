@@ -15,6 +15,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Helper that helps with populating {@link ContextProperties}
+ *
+ * @author NoSleep - Nipe
+ */
 @UtilityClass
 public class LocalePlaceholderHelper {
 

@@ -1,5 +1,5 @@
 group 'at.nipe.playlegend'
-version '0.0.1-alpha'
+version = '0.0.2'
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(16))

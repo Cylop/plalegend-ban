@@ -19,7 +19,7 @@ import java.util.Date;
 /**
  * Facade to provide a simple and combined interface for the ban and user service
  *
- * @author NoSleep - NIPE
+ * @author NoSleep - Nipe
  */
 @Log
 @Component

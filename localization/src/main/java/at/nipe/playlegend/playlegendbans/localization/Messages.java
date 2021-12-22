@@ -2,8 +2,14 @@ package at.nipe.playlegend.playlegendbans.localization;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ *
+ * Helper class for providing typed message keys
+ *
+ * @author NoSleep - Nipe
+ */
 @UtilityClass
-public final class LocalKeys {
+public final class Messages {
 
   public static final String PLUGIN_NAME = "plugin.name";
 

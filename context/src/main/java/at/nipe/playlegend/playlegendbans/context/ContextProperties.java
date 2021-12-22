@@ -8,6 +8,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Simple data store that is needed for replacing placeholder
+ *
+ * @author NoSleep - Nipe
+ */
 public class ContextProperties {
 
   private final Map<String, String> properties = new ConcurrentHashMap<>();

@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Service for {@link User} to provide the required functions to handle user
+ *
+ * @author NoSleep - Nipe
+ */
 public interface UserService {
 
   Optional<User> findById(@Nonnull final UUID uuid) throws SQLException;

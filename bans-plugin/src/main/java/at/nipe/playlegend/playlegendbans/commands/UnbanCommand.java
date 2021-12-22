@@ -2,9 +2,8 @@ package at.nipe.playlegend.playlegendbans.commands;
 
 import at.nipe.playlegend.playlegendbans.BanFacade;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
-import at.nipe.playlegend.playlegendbans.localization.LocalHelper;
-import at.nipe.playlegend.playlegendbans.localization.LocalKeys;
-import at.nipe.playlegend.playlegendbans.localization.LocalizationContainer;
+import at.nipe.playlegend.playlegendbans.localization.MessageService;
+import at.nipe.playlegend.playlegendbans.localization.Messages;
 import at.nipe.playlegend.playlegendbans.shared.exceptions.AccountNotFoundException;
 import at.nipe.playlegend.playlegendbans.shared.resolution.Component;
 import lombok.extern.java.Log;
@@ -16,7 +15,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 
 import static at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper.*;
@@ -26,18 +24,18 @@ import static at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper.
  *
  * <p>Usage: /unban player
  *
- * @author NoSleep - NIPE
+ * @author NoSleep - Nipe
  */
 @Log
 @Component
 public class UnbanCommand implements CommandExecutor {
 
-  private final ResourceBundle resourceBundle;
+  private final MessageService messageService;
   private final BanFacade banFacade;
 
   @Inject
-  public UnbanCommand(LocalizationContainer localizationContainer, BanFacade banFacade) {
-    this.resourceBundle = localizationContainer.getResourceBundle();
+  public UnbanCommand(@Nonnull MessageService messageService, @Nonnull BanFacade banFacade) {
+    this.messageService = messageService;
     this.banFacade = banFacade;
   }
 
@@ -48,14 +46,12 @@ public class UnbanCommand implements CommandExecutor {
       @Nonnull String label,
       @Nonnull String[] args) {
     if (!(sender instanceof ConsoleCommandSender) && !sender.hasPermission("playlegend.unban")) {
-      sender.sendMessage(
-          LocalHelper.translate(this.resourceBundle, LocalKeys.ERRORS_NO_PERMISSION));
+      sender.sendMessage(this.messageService.receive(Messages.ERRORS_NO_PERMISSION));
       return true;
     }
 
     if (args.length < 1) {
-      sender.sendMessage(
-          LocalHelper.translate(this.resourceBundle, LocalKeys.ERRORS_UNBAN_ARGS_NOT_ENOUGH));
+      sender.sendMessage(this.messageService.receive(Messages.ERRORS_UNBAN_ARGS_NOT_ENOUGH));
       return false;
     }
 
@@ -64,34 +60,30 @@ public class UnbanCommand implements CommandExecutor {
 
       if (unbanned) {
         sender.sendMessage(
-            LocalHelper.translate(
-                this.resourceBundle,
+            this.messageService.receive(
                 ContextProperties.of(
                     combine(buildPlayerContext(sender), buildTargetPlayerContext(args[0]))),
-                LocalKeys.SUCCESS_UNBAN_SUCCESSFUL));
+                Messages.SUCCESS_UNBAN_SUCCESSFUL));
       } else {
         sender.sendMessage(
-            LocalHelper.translate(
-                this.resourceBundle,
+            this.messageService.receive(
                 ContextProperties.of(
                     combine(buildPlayerContext(sender), buildTargetPlayerContext(args[0]))),
-                LocalKeys.ERRORS_UNBAN_NOT_BANNED));
+                Messages.ERRORS_UNBAN_NOT_BANNED));
       }
       return true;
     } catch (SQLException e) {
       sender.sendMessage(
-          LocalHelper.translate(
-              this.resourceBundle,
+          this.messageService.receive(
               ContextProperties.of(
                   combine(buildPlayerContext(sender), buildTargetPlayerContext(args[0]))),
-              LocalKeys.ERRORS_UNBAN_ERROR));
+              Messages.ERRORS_UNBAN_ERROR));
       log.log(Level.SEVERE, "SQL Error occurred whilst unbanning player " + args[0], e);
     } catch (AccountNotFoundException e) {
       sender.sendMessage(
-          LocalHelper.translate(
-              this.resourceBundle,
+          this.messageService.receive(
               ContextProperties.of(buildPlayerContext(e.getPlayerName())),
-              LocalKeys.ERRORS_USER_NO_ACCOUNT));
+              Messages.ERRORS_USER_NO_ACCOUNT));
     }
 
     return false;

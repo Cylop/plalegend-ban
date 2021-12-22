@@ -21,6 +21,11 @@ import com.j256.ormlite.support.ConnectionSource;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 
+/**
+ * Guice Module that binds and provides persistence services
+ *
+ * @author NoSleep - Nipe
+ */
 @Log
 public class PersistenceModule extends AbstractModule {
 

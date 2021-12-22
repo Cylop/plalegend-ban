@@ -18,10 +18,15 @@ import java.nio.file.StandardCopyOption;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Holds the general messages and is responsible for creating and loading the file.
+ *
+ * @author NoSleep - Nipe
+ */
 @Log
 @Singleton
 @Component
-public class LocalizationContainer {
+public class MessageContainer {
 
   private static final String LOCALIZATION_FILE_NAMES = "localization";
 
@@ -30,7 +35,7 @@ public class LocalizationContainer {
   @Getter private ResourceBundle resourceBundle;
 
   @Inject
-  public LocalizationContainer(JavaPlugin plugin) {
+  public MessageContainer(JavaPlugin plugin) {
     this.plugin = plugin;
     try {
       this.load();
@@ -39,7 +44,13 @@ public class LocalizationContainer {
     }
   }
 
-  public void load() throws IOException, NullPointerException {
+  /**
+   * Loads the localization.properties from plugins data-folder into resource bundle
+   *
+   * @throws IOException if file does not exist
+   * @throws IllegalArgumentException if the provided url of the properties file is malicious
+   */
+  public void load() throws IOException {
     this.copyDefaultLocalization();
 
     var configFolder = new File(this.plugin.getDataFolder(), "config");
@@ -48,7 +59,7 @@ public class LocalizationContainer {
     try {
       urls = new URL[] {configFolder.toURI().toURL()};
     } catch (MalformedURLException e) {
-      e.printStackTrace();
+      throw new IllegalArgumentException("Malicious url provided", e);
     }
     var loader = new URLClassLoader(urls);
 

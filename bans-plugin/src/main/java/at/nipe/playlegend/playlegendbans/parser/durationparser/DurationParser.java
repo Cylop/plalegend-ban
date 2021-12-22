@@ -19,7 +19,7 @@ import java.util.Objects;
  *
  * <p>today + 4 weeks + 3 days + 7 hours + 25 seconds
  *
- * @author NoSleep - NIPE
+ * @author NoSleep - Nipe
  */
 public class DurationParser extends Parser<String, Date> {
 

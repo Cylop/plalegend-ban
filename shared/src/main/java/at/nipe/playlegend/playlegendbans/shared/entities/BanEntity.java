@@ -2,6 +2,11 @@ package at.nipe.playlegend.playlegendbans.shared.entities;
 
 import java.util.Date;
 
+/**
+ * Interface to provide an api between modules
+ *
+ * @author NoSleep - Nipe
+ */
 public interface BanEntity {
 
   Long getId();

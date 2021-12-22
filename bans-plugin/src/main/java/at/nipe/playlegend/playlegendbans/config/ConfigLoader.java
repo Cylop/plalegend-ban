@@ -5,9 +5,13 @@ import lombok.extern.java.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.annotation.Nonnull;
+
 /**
  * Class that loads the config.yml in the plugins data-folder. This is needed to store some basic
  * configuration for the database connection and some plugin tweaks.
+ *
+ * @author NoSleep - Nipe
  */
 @Log
 public class ConfigLoader {
@@ -16,7 +20,7 @@ public class ConfigLoader {
 
   private final JavaPlugin plugin;
 
-  public ConfigLoader(JavaPlugin plugin) {
+  public ConfigLoader(@Nonnull JavaPlugin plugin) {
     this.plugin = plugin;
   }
 
