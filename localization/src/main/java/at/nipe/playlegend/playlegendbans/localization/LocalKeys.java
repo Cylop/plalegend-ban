@@ -11,6 +11,7 @@ public final class LocalKeys {
   public static final String BAN_MESSAGE = "ban.message";
   public static final String ERRORS_BAN_ARGS_NOT_ENOUGH = "errors.ban.args.not-enough";
   public static final String ERRORS_BAN_ERROR = "errors.ban.error";
+  public static final String ERRORS_BAN_SELF_BAN = "errors.ban.self-ban";
   public static final String ERRORS_DURATION_INVALID_UNIT = "errors.duration.invalid-unit";
   public static final String ERRORS_NO_PERMISSION = "errors.no-permission";
   public static final String ERRORS_PLAYER_NOT_ONLINE = "errors.player.not-online";

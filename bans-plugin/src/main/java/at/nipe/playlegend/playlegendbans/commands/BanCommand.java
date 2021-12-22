@@ -2,7 +2,6 @@ package at.nipe.playlegend.playlegendbans.commands;
 
 import at.nipe.playlegend.playlegendbans.BanFacade;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
-import at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper;
 import at.nipe.playlegend.playlegendbans.localization.LocalHelper;
 import at.nipe.playlegend.playlegendbans.localization.LocalKeys;
 import at.nipe.playlegend.playlegendbans.localization.LocalizationContainer;
@@ -27,6 +26,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import static at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper.*;
 
 /**
  * Command that bans a player for a given duration and a message.
@@ -54,6 +55,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
       sender.sendMessage(LocalHelper.translate(this.resourceBundle, LocalKeys.ERRORS_NO_PERMISSION));
       return true;
     }
+
     // /ban <player> <duration> <message>
     if (args.length < 1) {
       sender.sendMessage(LocalHelper.translate(this.resourceBundle, LocalKeys.ERRORS_BAN_ARGS_NOT_ENOUGH));
@@ -61,6 +63,13 @@ public class BanCommand implements CommandExecutor, TabCompleter {
     }
 
     var playerName = args[0];
+
+    if(sender.getName().equals(playerName)) {
+      sender.sendMessage(LocalHelper.translate(
+              this.resourceBundle,
+              ContextProperties.of(buildPlayerContext(sender)),
+              LocalKeys.ERRORS_BAN_SELF_BAN));
+    }
 
     var duration = "999y";
     if (args.length >= 2) {
@@ -74,10 +83,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
       sender.sendMessage(
           LocalHelper.translate(
               this.resourceBundle,
-              ContextProperties.of(
-                  LocalePlaceholderHelper.combine(
-                      LocalePlaceholderHelper.buildPlayerContext(sender),
-                      LocalePlaceholderHelper.buildAllowedUnitsContext())),
+              ContextProperties.of(combine(buildPlayerContext(sender), buildAllowedUnitsContext())),
               LocalKeys.ERRORS_DURATION_INVALID_UNIT));
       return true;
     }
@@ -98,24 +104,24 @@ public class BanCommand implements CommandExecutor, TabCompleter {
         player.kickPlayer(
           LocalHelper.translate(
               this.resourceBundle,
-              ContextProperties.of(LocalePlaceholderHelper.buildBanContext(ban)),
+              ContextProperties.of(buildBanContext(ban)),
               LocalKeys.BAN_MESSAGE));
       }
-      sender.sendMessage(LocalHelper.translate(this.resourceBundle, ContextProperties.of(LocalePlaceholderHelper.combine(LocalePlaceholderHelper.buildPlayerContext(sender), LocalePlaceholderHelper.buildTargetPlayerContext(playerName))), LocalKeys.SUCCESS_BAN_SUCCESSFUL)
+      sender.sendMessage(LocalHelper.translate(this.resourceBundle, ContextProperties.of(combine(buildPlayerContext(sender), buildTargetPlayerContext(playerName))), LocalKeys.SUCCESS_BAN_SUCCESSFUL)
       );
       return true;
     } catch (SQLException e) {
       sender.sendMessage(
           LocalHelper.translate(
               this.resourceBundle,
-              ContextProperties.of(LocalePlaceholderHelper.buildPlayerContext(sender)),
+              ContextProperties.of(buildPlayerContext(sender)),
               LocalKeys.ERRORS_BAN_ERROR));
       log.log(Level.SEVERE, String.format("SQL Error occurred whilst banning player %s", playerName), e);
     } catch (AccountNotFoundException e) {
       sender.sendMessage(
           LocalHelper.translate(
               this.resourceBundle,
-              ContextProperties.of(LocalePlaceholderHelper.buildPlayerContext(e.getPlayerName())),
+              ContextProperties.of(buildPlayerContext(e.getPlayerName())),
               LocalKeys.ERRORS_USER_NO_ACCOUNT));
     }
     return false;

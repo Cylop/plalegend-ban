@@ -2,7 +2,6 @@ package at.nipe.playlegend.playlegendbans.commands;
 
 import at.nipe.playlegend.playlegendbans.BanFacade;
 import at.nipe.playlegend.playlegendbans.context.ContextProperties;
-import at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper;
 import at.nipe.playlegend.playlegendbans.localization.LocalHelper;
 import at.nipe.playlegend.playlegendbans.localization.LocalKeys;
 import at.nipe.playlegend.playlegendbans.localization.LocalizationContainer;
@@ -19,6 +18,8 @@ import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+
+import static at.nipe.playlegend.playlegendbans.context.LocalePlaceholderHelper.*;
 
 /**
  * Command that unbans a player.
@@ -66,18 +67,14 @@ public class UnbanCommand implements CommandExecutor {
             LocalHelper.translate(
                 this.resourceBundle,
                 ContextProperties.of(
-                    LocalePlaceholderHelper.combine(
-                        LocalePlaceholderHelper.buildPlayerContext(sender),
-                        LocalePlaceholderHelper.buildTargetPlayerContext(args[0]))),
+                    combine(buildPlayerContext(sender), buildTargetPlayerContext(args[0]))),
                 LocalKeys.SUCCESS_UNBAN_SUCCESSFUL));
       } else {
         sender.sendMessage(
             LocalHelper.translate(
                 this.resourceBundle,
                 ContextProperties.of(
-                    LocalePlaceholderHelper.combine(
-                        LocalePlaceholderHelper.buildPlayerContext(sender),
-                        LocalePlaceholderHelper.buildTargetPlayerContext(args[0]))),
+                    combine(buildPlayerContext(sender), buildTargetPlayerContext(args[0]))),
                 LocalKeys.ERRORS_UNBAN_NOT_BANNED));
       }
       return true;
@@ -86,16 +83,14 @@ public class UnbanCommand implements CommandExecutor {
           LocalHelper.translate(
               this.resourceBundle,
               ContextProperties.of(
-                  LocalePlaceholderHelper.combine(
-                      LocalePlaceholderHelper.buildPlayerContext(sender),
-                      LocalePlaceholderHelper.buildTargetPlayerContext(args[0]))),
+                  combine(buildPlayerContext(sender), buildTargetPlayerContext(args[0]))),
               LocalKeys.ERRORS_UNBAN_ERROR));
       log.log(Level.SEVERE, "SQL Error occurred whilst unbanning player " + args[0], e);
     } catch (AccountNotFoundException e) {
       sender.sendMessage(
           LocalHelper.translate(
               this.resourceBundle,
-              ContextProperties.of(LocalePlaceholderHelper.buildPlayerContext(e.getPlayerName())),
+              ContextProperties.of(buildPlayerContext(e.getPlayerName())),
               LocalKeys.ERRORS_USER_NO_ACCOUNT));
     }
 
