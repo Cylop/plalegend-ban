@@ -69,6 +69,7 @@ public class BanCommand implements CommandExecutor, TabCompleter {
               this.resourceBundle,
               ContextProperties.of(buildPlayerContext(sender)),
               LocalKeys.ERRORS_BAN_SELF_BAN));
+      return true;
     }
 
     var duration = "999y";
