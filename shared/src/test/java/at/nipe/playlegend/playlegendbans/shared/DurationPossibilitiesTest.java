@@ -12,7 +12,7 @@ public class DurationPossibilitiesTest {
 
   @BeforeEach
   public void initialize() {
-    this.allowedUnits = new String[] {"y", "m", "w", "d", "h", "min", "s"};
+    this.allowedUnits = new String[] {"y", "M", "w", "d", "h", "m", "s"};
   }
 
   @Test
